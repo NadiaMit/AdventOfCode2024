@@ -9,9 +9,9 @@ This is my try on the Advent of code of 2024 challanges in Python.
 
 ## Structure
 
-- `days`: the code for each day will be in the days folder as a `dayX.py` file.
-- `inputs`: all my input data for each day is saved the inputs folder as a `inputX.txt` file. I also have a `test.txt` file, that I use for the example input of each days puzzle.
-- `helpers`: contains my `helpers.py` and `template.py` files. The helper files has some functions to read the input data an I am pretty sure, I will add some other helping functions if I see that puzzles will need some generic functionality more than once. And the template file is my base for every days puzzle.
+- `days` - folder: the code for each day will be in the days folder as a `dayX.py` file.
+- `inputs` - folder: all my input data for each day is saved the inputs folder as a `inputX.txt` file. I also have a `test.txt` file, that I use for the example input of each days puzzle.
+- `helpers` - folder: contains my `helpers.py` and `template.py` files. The helper files has some functions to read the input data an I am pretty sure, I will add some other helping functions if I see that puzzles will need some generic functionality more than once. And the template file is my base for every days puzzle.
 
 ## Run Days
 
