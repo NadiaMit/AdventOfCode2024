@@ -20,21 +20,15 @@ for line in input:
 result_part_1 = 0
 result_part_2 =  0
 
-left_list_copy = left_list.copy()
-right_list_copy = right_list.copy()
+left_list.sort()
+right_list.sort()
+
 for i in range(len(left_list)):
     # part 1
-    smallest_first = min(left_list_copy)
-    smallest_second = min(right_list_copy)
-    
-    left_list_copy.remove(smallest_first)
-    right_list_copy.remove(smallest_second)
-    
-    result_part_1 += abs(smallest_first - smallest_second)
+    result_part_1 += abs(left_list[i] - right_list[i])
     
     # part 2
-    count = right_list.count(left_list[i])
-    result_part_2 += left_list[i] * count
+    result_part_2 += left_list[i] * right_list.count(left_list[i])
 
 
 # print the results
