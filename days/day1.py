@@ -12,9 +12,9 @@ input = helpers.read_input(day, test=isTest)
 left_list = []
 right_list = []
 for line in input:
-    line = line.split()
-    left_list.append(int(line[0]))
-    right_list.append(int(line[1]))
+  line = line.split()
+  left_list.append(int(line[0]))
+  right_list.append(int(line[1]))
 
 
 result_part_1 = 0
@@ -24,11 +24,11 @@ left_list.sort()
 right_list.sort()
 
 for i in range(len(left_list)):
-    # part 1
-    result_part_1 += abs(left_list[i] - right_list[i])
-    
-    # part 2
-    result_part_2 += left_list[i] * right_list.count(left_list[i])
+  # part 1
+  result_part_1 += abs(left_list[i] - right_list[i])
+  
+  # part 2
+  result_part_2 += left_list[i] * right_list.count(left_list[i])
 
 
 # print the results
