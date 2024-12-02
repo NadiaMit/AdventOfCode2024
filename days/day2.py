@@ -21,7 +21,6 @@ def check_is_safe(report):
   
   return amount_safe and sign_safe
 
-# part 1
 result_part_1 = 0
 result_part_2 = 0
 for report in reports:
