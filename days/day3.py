@@ -15,26 +15,22 @@ def multiply(mul):
   return int(numbers[0]) * int(numbers[1])
 
 
-# part 1
-result_part_1 = 0
-
-multiplications = re.findall(r"mul\([\d]{1,3},[\d]{1,3}\)", input)
-for mul in multiplications:
-    result_part_1 += multiply(mul)
-
-# part 2
-result_part_2 =  0
 
 instructions = re.findall(r"mul\([\d]{1,3},[\d]{1,3}\)|don't\(\)|do\(\)", input)
+
 allowed = True
+result_part_1 = 0
+result_part_2 =  0
+
 for ins in instructions:
   if ins.startswith("mul"):
+    product = multiply(ins)
+    result_part_1 += product
     if allowed:
-      result_part_2 += multiply(ins)
-  elif ins.startswith("don't"):
-    allowed = False
+      result_part_2 += product
   else:
-    allowed = True
+    allowed = True if ins.startswith("do()") else False
+
 
 
 
