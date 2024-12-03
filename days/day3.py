@@ -14,8 +14,6 @@ def multiply(mul):
   numbers = mul.replace("mul(", "").replace(")", "").split(",")
   return int(numbers[0]) * int(numbers[1])
 
-
-
 instructions = re.findall(r"mul\([\d]{1,3},[\d]{1,3}\)|don't\(\)|do\(\)", input)
 
 allowed = True
@@ -30,8 +28,6 @@ for ins in instructions:
       result_part_2 += product
   else:
     allowed = True if ins.startswith("do()") else False
-
-
 
 
 # print the results

@@ -16,7 +16,6 @@ for line in input:
   left_list.append(int(line[0]))
   right_list.append(int(line[1]))
 
-
 result_part_1 = 0
 result_part_2 =  0
 
