@@ -1,5 +1,5 @@
-![](https://img.shields.io/badge/stars%20⭐-6-yellow)
-![](https://img.shields.io/badge/days%20completed%20📅-3-blue)
+![](https://img.shields.io/badge/stars%20⭐-8-yellow)
+![](https://img.shields.io/badge/days%20completed%20📅-4-blue)
 
 # Advent of Code 2024 in Python [![Python](https://skillicons.dev/icons?i=python)](https://skillicons.dev)
 
