@@ -22,38 +22,44 @@ def xmas_count(data, row, col):
   mas_count = 0
   checks = []
   
-  # horizontal check
-  if col + 3 < width:
-    checks.append(data[row][col:col+4])
-  
-  # vertical check
-  if row + 3 < height:
-    checks.append(str.join('',[data[row+i][col] for i in range(0,4)]))
-  
-  # diagonal check
-  # top left to bottom right
-  if row + 3 < height and col + 3 < width:
-    checks.append(str.join('', [data[row+i][col+i] for i in range(0,4)]))
-
-  # top right to bottom left
-  if row + 3 < height and col - 3 >= 0:
-    checks.append(str.join('', [data[row+i][col-i] for i in range(0,4)]))
-  
-  for check in checks:
-    xmas_count += int(string_check(check, xmas))
-  
-  # mas in form of X count
-  if row + 2 < height and col + 2 < width:
+  # part 1
+  # only check part 1 if the current cell is X or S
+  if data[row][col] in ['X', 'S']:
+    # horizontal check
+    if col + 3 < width:
+      checks.append(data[row][col:col+4])
+    
+    # vertical check
+    if row + 3 < height:
+      checks.append(str.join('',[data[row+i][col] for i in range(0,4)]))
+    
+    # diagonal check
     # top left to bottom right
-    right = str.join('', [data[row+i][col+i] for i in range(0,3)])
-    right_check = string_check(right, mas)
-    
+    if row + 3 < height and col + 3 < width:
+      checks.append(str.join('', [data[row+i][col+i] for i in range(0,4)]))
+
     # top right to bottom left
-    left = str.join('', [data[row+i][col+2-i] for i in range(0,3)])
-    left_check = string_check(left, mas)
+    if row + 3 < height and col - 3 >= 0:
+      checks.append(str.join('', [data[row+i][col-i] for i in range(0,4)]))
     
-    if right_check and left_check:
-      mas_count += 1
+    for check in checks:
+      xmas_count += int(string_check(check, xmas))
+  
+  # part 2
+  # only check part 2 if the current cell is M or S
+  if data[row][col] in ['M', 'S']:
+    # mas in form of X count
+    if row + 2 < height and col + 2 < width:
+      # top left to bottom right
+      right = str.join('', [data[row+i][col+i] for i in range(0,3)])
+      right_check = string_check(right, mas)
+      
+      # top right to bottom left
+      left = str.join('', [data[row+i][col+2-i] for i in range(0,3)])
+      left_check = string_check(left, mas)
+      
+      if right_check and left_check:
+        mas_count += 1
   
   return [xmas_count, mas_count]
 
