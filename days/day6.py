@@ -8,64 +8,49 @@ day = helpers.get_current_day(__file__)
 isTest = sys.argv[-1] == "test"
 input = helpers.read_input(day, test=isTest)
 
-map = [list(line) for line in input]
+area_map = [list(line) for line in input]
 
 # code for both parts
 
-def turn_right(dir):
-  [x, y] = dir
-  # from up to right
-  if x == 0 and y == -1:
-    return [1, 0]
-  # from right to down
-  if x == 1 and y == 0:
-    return [0, 1]
-  # from down to left
-  if x == 0 and y == 1:
-    return [-1, 0]
-  # from left to up
-  if x == -1 and y == 0:
-    return [0, -1]
+def turn_right(direction):
+  [x, y] = direction
+  # clockwise rotation of 90 degrees
+  return [-y, x]
 
-def check_map_boundaries(x, y):
-  return y > 0 and y < len(map)-1 and x > 0 and x < len(map[y])-1
+def in_bound(x, y):
+  return 0 <= x < len(area_map[0]) and 0 <= y < len(area_map)
 
 # find the guards starting position in the area
-position = [0, 0]
-direction = [0, 0]
-for y in range(len(map)):
-    start = map[y].index('^') if '^' in map[y] else -1
+start_pos = [0, 0]
+start_dir = [0, -1]
+for y in range(len(area_map)):
+    start = area_map[y].index('^') if '^' in area_map[y] else -1
     if start != -1:
-      position = [start, y]
-      direction = [0, -1]
-      map[y][start] = 'X'
+      start_pos = [start, y]
       break
-
-guard_left = False
-# follow the path of the guard
-while not guard_left:
-  [x, y] = position
-  [dir_x, dir_y] = direction
-  
-  # as long as the guard does not leave the map or run into an obstacle go straight
-  while check_map_boundaries(x, y) and map[y+dir_y][x+dir_x] != '#' :
-    x += dir_x
-    y += dir_y
-    position = [x, y]
-    map[y][x] = 'X'
-  else:
-    # if the guard goes outside the map, stop
-    if not check_map_boundaries(x, y):
-      guard_left = True
-      break
-    # if the guard runs into an obstacle, turn right
-    else:
-      direction = turn_right(direction)
 
 # part 1
-result_part_1 = 0
-for line in map:
-  result_part_1 += line.count('X')
+position = start_pos
+direction = start_dir
+
+visited = {(position[0], position[1])}
+# follow the path of the guard until they leave the map
+while True:
+  [x, y] = [position[0] + direction[0], position[1] + direction[1]]
+  
+  # check if next position is outside the map
+  if not in_bound(x, y):
+    break
+  
+  # if there is no obstacle, move
+  if area_map[y][x] != '#':
+    position = [x, y]
+    visited.add((x, y))
+  # otherwise, turn right
+  else:
+    direction = turn_right(direction)
+
+result_part_1 = len(visited)
 
 # part 2
 result_part_2 =  0
