@@ -31,23 +31,27 @@ def check_map_boundaries(x, y):
   return y > 0 and y < len(map)-1 and x > 0 and x < len(map[y])-1
 
 # find the guards starting position in the area
-guard_path = []
+position = [0, 0]
+direction = [0, 0]
 for y in range(len(map)):
     start = map[y].index('^') if '^' in map[y] else -1
     if start != -1:
-      guard_path.append({'position': [start, y], 'direction': [0, -1]})
+      position = [start, y]
+      direction = [0, -1]
+      map[y][start] = 'X'
       break
 
 guard_left = False
 # follow the path of the guard
 while not guard_left:
-  [x, y], [dir_x, dir_y] = guard_path[-1].values()
+  [x, y] = position
+  [dir_x, dir_y] = direction
   
   # as long as the guard does not leave the map or run into an obstacle go straight
   while check_map_boundaries(x, y) and map[y+dir_y][x+dir_x] != '#' :
     x += dir_x
     y += dir_y
-    guard_path.append({'position': [x, y], 'direction': [dir_x, dir_y]})
+    position = [x, y]
     map[y][x] = 'X'
   else:
     # if the guard goes outside the map, stop
@@ -56,7 +60,7 @@ while not guard_left:
       break
     # if the guard runs into an obstacle, turn right
     else:
-      guard_path[-1]['direction'] = turn_right([dir_x, dir_y])
+      direction = turn_right(direction)
 
 # part 1
 result_part_1 = 0
