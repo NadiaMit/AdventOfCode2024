@@ -20,20 +20,41 @@ def turn_right(direction):
 def in_bound(x, y):
   return 0 <= x < len(area_map[0]) and 0 <= y < len(area_map)
 
+def is_loop(obs_x, obs_y, position, direction):
+  new_obstacle = (obs_x, obs_y)
+  direction = turn_right(direction)
+  visited = {(position[0], position[1], direction[0], direction[1])}
+  
+  while True:
+    [x, y] = [position[0] + direction[0], position[1] + direction[1]]
+    
+    # if we run outside the map, we are not in a loop
+    if not in_bound(x, y):
+      return False
+    
+    if area_map[y][x] == '#' or (x, y) == new_obstacle:
+      direction = turn_right(direction)
+      continue
+    
+    # if we have visited this position before, we are in a loop
+    if (x, y, direction[0], direction[1]) in visited:
+      return True
+    
+    # add the position to the visited set
+    visited.add((x, y, direction[0], direction[1]))
+    position = [x, y]
+
 # find the guards starting position in the area
-start_pos = [0, 0]
-start_dir = [0, -1]
+position = [0, 0]
+direction = [0, -1]
 for y in range(len(area_map)):
     start = area_map[y].index('^') if '^' in area_map[y] else -1
     if start != -1:
-      start_pos = [start, y]
+      position = [start, y]
       break
 
-# part 1
-position = start_pos
-direction = start_dir
-
 visited = {(position[0], position[1])}
+added = 0
 # follow the path of the guard until they leave the map
 while True:
   [x, y] = [position[0] + direction[0], position[1] + direction[1]]
@@ -42,20 +63,23 @@ while True:
   if not in_bound(x, y):
     break
   
-  # if there is no obstacle, move
-  if area_map[y][x] != '#':
-    position = [x, y]
-    visited.add((x, y))
-  # otherwise, turn right
-  else:
+  # turn right if the next position is a wall
+  if area_map[y][x] == '#':
     direction = turn_right(direction)
+    continue
+  
+  if (x, y) not in visited and is_loop(x, y, position, direction):
+    added += 1
+  
+  # go forward
+  position = [x, y]
+  visited.add((x, y))
+
 
 result_part_1 = len(visited)
-
-# part 2
-result_part_2 =  0
+result_part_2 =  added
 
 # print the results
 print(f"--- Day {day}: ---")
 print(f"Part 1: {result_part_1}") #4939
-print(f"Part 2: {result_part_2}")
+print(f"Part 2: {result_part_2}") #1434
