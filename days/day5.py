@@ -17,9 +17,7 @@ updates = [u.split(',') for u in updates.splitlines()]
 rules = {}
 for rule in rules_input:
   rule = rule.split("|")
-  if rules.get(rule[0]) == None:
-    rules[rule[0]] = []
-  rules[rule[0]].append(rule[1])
+  rules.setdefault(rule[0], []).append(rule[1])
 
 
 def check_update(update):
