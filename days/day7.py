@@ -20,7 +20,7 @@ def check_combinations(test, numbers, op_types):
       elif op == "*":
         result *= numbers[i]
       elif op == '||':
-        result = int(str(result) + str(numbers[i]))
+        result = int(f"{result}{numbers[i]}")
 
     # if the result is the same as the test, return the test value otherwise continue and return 0
     if result == test:
