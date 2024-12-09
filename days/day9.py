@@ -14,31 +14,58 @@ blocks = [int(x) for x in list(input)]
 # part 1
 result_part_1 = 0
 
-full_free_string = []
+block_info = []
+full_free = []
 ID = 0
 for i in range (0, len(blocks)):
   add = '.'
   if i % 2 == 0:
     add = str(ID)
     ID += 1
-  for j in range(0, blocks[i]):
-    full_free_string.append(add)
+  for _ in range(0, blocks[i]):
+    full_free.append(add)
+  block_info.append((add, blocks[i]))
 
-reordered_string = []
-insert_numbers = [x for x in full_free_string if x != "."]
+reordered = []
+insert_numbers = [x for x in full_free if x != "."]
 for i in range(0, len(insert_numbers)):
-  if full_free_string[i] == ".":
-    reordered_string.append(insert_numbers.pop())
+  if full_free[i] == ".":
+    reordered.append(insert_numbers.pop())
   else:
-    reordered_string.append(full_free_string[i])
+    reordered.append(full_free[i])
 
-for i in range(0, len(reordered_string)):
-  result_part_1 += i * int(reordered_string[i])
+for i in range(0, len(reordered)):
+  result_part_1 += i * int(reordered[i])
 
 # part 2
 result_part_2 =  0
+reordered = block_info
+
+for i in range(len(reordered)-1, 0, -1):
+  block, amount = reordered[i]
+  if block == '.':
+    continue
+  for j in range(0, i):
+    check_block, check_amount = reordered[j]
+    if check_block == '.' and check_amount >= amount:
+      
+      reordered[i] = ('.', amount)
+      reordered = reordered[:j] + [(block, amount)] + reordered[j:]
+      rest_amount = check_amount - amount
+      reordered[j+1] = ('.', rest_amount)
+      break
+
+
+new_blocks = []
+for block, amount in reordered:
+  for _ in range(0, amount):
+    new_blocks.append(block)
+for i in range(0, len(new_blocks)):
+  if new_blocks[i] != '.':
+    result_part_2 += i * int(new_blocks[i])
+
 
 # print the results
 print(f"--- Day {day}: ---")
 print(f"Part 1: {result_part_1}") #6283404590840
-print(f"Part 2: {result_part_2}")
+print(f"Part 2: {result_part_2}") #6304576012713
