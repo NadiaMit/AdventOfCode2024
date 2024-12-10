@@ -1,4 +1,5 @@
 import sys
+import time
 from itertools import product
 
 sys.path.insert(1, sys.path[0].replace("days", "helpers"))
@@ -8,6 +9,9 @@ import helpers as helpers
 day = helpers.get_current_day(__file__)
 isTest = sys.argv[-1] == "test"
 input = helpers.read_input(day, test=isTest)
+
+# start timer for whole day puzzle after reading the input
+start_time = time.time()
 
 # code for both parts
 def check_combinations(test, numbers, op_types):
@@ -44,3 +48,4 @@ for test, numbers in calibrations:
 print(f"--- Day {day}: ---")
 print(f"Part 1: {result_part_1}") #303876485655
 print(f"Part 2: {result_part_2}") #146111650210682
+print(f"Duration: {time.time() - start_time} seconds")

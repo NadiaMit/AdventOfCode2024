@@ -1,4 +1,5 @@
 import sys
+import time
 
 sys.path.insert(1, sys.path[0].replace("days", "helpers"))
 import helpers as helpers
@@ -7,6 +8,9 @@ import helpers as helpers
 day = helpers.get_current_day(__file__)
 isTest = sys.argv[-1] == "test"
 input = helpers.read_input(day, test=isTest)
+
+# start timer for whole day puzzle after reading the input
+start_time = time.time()
 
 # code for both parts
 xmas = "XMAS"
@@ -77,3 +81,4 @@ for row in range(len(input)):
 print(f"--- Day {day}: ---")
 print(f"Part 1: {result_part_1}") #2613
 print(f"Part 2: {result_part_2}") #1905
+print(f"Duration: {time.time() - start_time} seconds")

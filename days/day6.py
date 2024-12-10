@@ -1,4 +1,5 @@
 import sys
+import time
 
 sys.path.insert(1, sys.path[0].replace("days", "helpers"))
 import helpers as helpers
@@ -8,9 +9,11 @@ day = helpers.get_current_day(__file__)
 isTest = sys.argv[-1] == "test"
 input = helpers.read_input(day, test=isTest)
 
-area_map = [list(line) for line in input]
+# start timer for whole day puzzle after reading the input
+start_time = time.time()
 
 # code for both parts
+area_map = [list(line) for line in input]
 
 def turn_right(direction):
   [x, y] = direction
@@ -83,3 +86,4 @@ result_part_2 =  added
 print(f"--- Day {day}: ---")
 print(f"Part 1: {result_part_1}") #4939
 print(f"Part 2: {result_part_2}") #1434
+print(f"Duration: {time.time() - start_time} seconds")
