@@ -12,41 +12,43 @@ input = helpers.read_input(day, test=isTest)
 # code for both parts
 topographic_map = [[int(x) for x in line] for line in input]
 
-def in_bounds(x, y, map):
+def in_bounds(pos, map):
+  y, x = pos
   return 0 <= x < len(map[0]) and 0 <= y < len(map)
 
-def flood_fill(map, y, x, height, visited):
-  trail_end = 0
-  
-  if not in_bounds(x, y, map) or map[y][x] != height or (y, x) in visited:
-    return trail_end
-  
-  if map[y][x] == 9:
-    visited.add((y, x))
-    return trail_end+1
-  
-  visited.add((y, x))
-  
+def bfs(map, start):
+  queue = [(start, [start])]
   # up, down, left, right
-  new_height = height+1
-  trail_end += flood_fill(map, y-1, x, new_height, visited)
-  trail_end += flood_fill(map, y+1, x, new_height, visited)
-  trail_end += flood_fill(map, y, x-1, new_height, visited)
-  trail_end += flood_fill(map, y, x+1, new_height, visited)
+  directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+  paths = set()
+  ends = set()
+  height = 0
+
+  while queue:
+    node, path = queue.pop(0)
+    height = map[node[0]][node[1]]
     
-  return trail_end
+    if height == 9:
+      ends.add(node)
+      paths.add(tuple(path))
+    
+    for y, x in directions:
+      new_node = (node[0]+y, node[1]+x)
+      if in_bounds(new_node, map) and map[new_node[0]][new_node[1]] == height+1:
+        queue.append((new_node, path+[new_node]))
+    
+  return len(ends), len(paths)
 
 result_part_1 = 0
+result_part_2 =  0
 for y in range(len(topographic_map)):
   for x in range(len(topographic_map[y])):
     if topographic_map[y][x] == 0:
-      result_part_1 += flood_fill(topographic_map, y, x, 0, set())
-
-
-# part 2
-result_part_2 =  0
+      trail_ends, paths = bfs(topographic_map, (y, x))
+      result_part_1 += trail_ends
+      result_part_2 += paths
 
 # print the results
 print(f"--- Day {day}: ---")
 print(f"Part 1: {result_part_1}") #468
-print(f"Part 2: {result_part_2}")
+print(f"Part 2: {result_part_2}") #966
