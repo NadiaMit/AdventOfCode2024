@@ -28,4 +28,10 @@ def read_input(day, split_lines=True, test=False):
   input = read_file(path)
   return input.splitlines() if split_lines else input
 
+def in_bounds(pos, map):
+  """
+  Checks if a position is inside the map.
+  """
+  y, x = pos
+  return 0 <= x < len(map) and 0 <= y < len(map[0])
 

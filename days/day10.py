@@ -15,10 +15,6 @@ start_time = time.time()
 # code for both parts
 topographic_map = [[int(x) for x in line] for line in input]
 
-def in_bounds(pos, map):
-  y, x = pos
-  return 0 <= x < len(map[0]) and 0 <= y < len(map)
-
 def bfs(map, start):
   queue = [(start, [start])]
   # up, down, left, right
@@ -37,7 +33,7 @@ def bfs(map, start):
     
     for y, x in directions:
       new_node = (node[0]+y, node[1]+x)
-      if in_bounds(new_node, map) and map[new_node[0]][new_node[1]] == height+1:
+      if helpers.in_bounds(new_node, map) and map[new_node[0]][new_node[1]] == height+1:
         queue.append((new_node, path+[new_node]))
     
   return len(ends), len(paths)
