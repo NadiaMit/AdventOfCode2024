@@ -38,16 +38,9 @@ def solve_equation(claw, position_addition = 0):
   buttons = np.array([[x_a, x_b], [y_a, y_b]], dtype=int)
   result = np.linalg.solve(buttons, prize)
   
-  # round the result if its close enough to an integer since i got values like x.00002 or x.0000000000001 that should be just x
-  tolerance = 1e-3
-  result = np.where(
-    np.abs(result - np.rint(result)) < tolerance, 
-    np.rint(result),
-    result
-  )
-  
-  a = result[0]
-  b = result[1]
+  # round the result if its close enough to an integer since i got values like x.00002 or x.0000000000001 that should be just x"""
+  a = round(result[0],2)
+  b = round(result[1],2)
   if a.is_integer() and b.is_integer():
     return int(abs(a)*3 + abs(b)*1)
   return 0
