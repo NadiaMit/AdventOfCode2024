@@ -35,7 +35,7 @@ def solve_equation(button_a, button_b, prize, prize_add = 0):
   b = round(result[1, 0], 2)
   
   if a.is_integer() and b.is_integer():
-    return int(abs(a)*3 + abs(b)*1)
+    return int(a*3 + b*1)
   return 0
 
 
