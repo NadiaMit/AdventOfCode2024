@@ -39,7 +39,29 @@ class Robot:
     # update the position
     self.position = (new_x, new_y)
 
-def print_robots(robots, second):
+def count_quadrants(robots):
+  x_bound = WIDTH // 2
+  y_bound = HEIGHT // 2
+
+  quadrants = [0,0,0,0]
+  for robot in robots:
+    x,y = robot.position
+    # check if in quadrant 1
+    if x < x_bound and y < y_bound:
+      quadrants[0] += 1
+    # check if in quadrant 2
+    elif x > x_bound and y < y_bound:
+      quadrants[1] += 1
+    # check if in quadrant 3
+    elif x < x_bound and y > y_bound:
+      quadrants[2] += 1
+    # check if in quadrant 4
+    elif x > x_bound and y > y_bound:
+      quadrants[3] += 1
+
+  return reduce(mul, quadrants)
+
+def save_robots_tree(robots):
   unique_robots = set([robot.position for robot in robots])
   grid = []
 
@@ -56,7 +78,7 @@ def print_robots(robots, second):
   pixels = [pixel for row in grid for pixel in row]
   image.putdata(pixels)
 
-  image.save(f"./robots/{second}.jpg", "JPEG")
+  image.save(f"./robots_tree.jpg", "JPEG")
 
 robots = []
 pattern = re.compile(r"p=(-?\d+),(-?\d+) v=(-?\d+),(-?\d+)")
@@ -65,34 +87,37 @@ for line in input:
   px, py, vx, vy = map(int, match.groups())
   robots.append(Robot((px, py), (vx, vy)))
 
-tree_pos = 7709
-for i in range(10000):
+result_part_1 = 0
+result_part_2 = 0
+second = 0
+
+while True:
+  # move all robots
   for robot in robots:
     robot.move()
-  if i+1 == tree_pos:
-    print_robots(robots, i+1)
+    
+  # count up the seconds
+  second += 1
+  
+  # part 1: count the robots in each quadrant and multiply them
+  if second == 100:
+    result_part_1 = count_quadrants(robots)
+  
+  # part 2: count all the unique robots and see if there are 2 horizontal lines that build the easter egg tree
+  unique_robots = set([robot.position for robot in robots])
+  horizontal_lines = 0
+  for y in range(HEIGHT):
+    if sum([1  for robot in unique_robots if robot[1] == y]) > 30:
+      horizontal_lines += 1
+      
+      # if the tree easter egg was found, save it as a jpg image and break the loop
+      if horizontal_lines == 2:
+        save_robots_tree(robots)
+        result_part_2 = second
+        break
+  if result_part_2 != 0:
+    break
 
-x_bound = WIDTH // 2
-y_bound = HEIGHT // 2
-
-quadrants = [0,0,0,0]
-for robot in robots:
-  x,y = robot.position
-  # check if in quadrant 1
-  if x < x_bound and y < y_bound:
-    quadrants[0] += 1
-  # check if in quadrant 2
-  elif x > x_bound and y < y_bound:
-    quadrants[1] += 1
-  # check if in quadrant 3
-  elif x < x_bound and y > y_bound:
-    quadrants[2] += 1
-  # check if in quadrant 4
-  elif x > x_bound and y > y_bound:
-    quadrants[3] += 1
-
-result_part_1 = reduce(mul, quadrants)
-result_part_2 = tree_pos
 
 # print the results
 print(f"--- Day {day}: ---")
