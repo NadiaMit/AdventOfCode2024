@@ -6,4 +6,3 @@ helpers/__pycache__/
 
 # ignore all inputs see https://www.reddit.com/r/adventofcode/wiki/faqs/copyright/inputs/
 *.txt
-*.bmp
