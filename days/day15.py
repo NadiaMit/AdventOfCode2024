@@ -37,9 +37,6 @@ for y, line in enumerate(input):
       if char == '@':
         robot = x + (y * 1j)
 
-max_coordinate = max(warehouse.keys(), key=lambda x: x.real + x.imag)
-min_coordinate = min(warehouse.keys(), key=lambda x: x.real + x.imag)
-
 def move_boxes(box, move):
   new_box = box + move
   if warehouse[new_box] == '#':
