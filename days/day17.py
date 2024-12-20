@@ -32,8 +32,7 @@ for i in range(0, len(program_string), 2):
   program.append((int(program_string[i]), int(program_string[i+1])))
 
 output = []
-halt = False
-while not halt or pinter < len(program):
+while pointer < len(program):
   command, value = program[pointer]
 
   # get new value 
@@ -51,39 +50,37 @@ while not halt or pinter < len(program):
   if command == 0:
     a = registers["A"]
     registers["A"] = math.trunc(a/2**use_value)
-    pointer += 1
     
   elif command == 1:
     b = registers["B"]
     # bitwise XOR with value
     registers["B"] = b ^ value
-    pointer += 1
     
   elif command == 2:
     registers["B"] = use_value % 8
-    pointer += 1
     
   elif command == 3:
-    pass
+    if registers["A"] != 0:
+      pointer = value
+      continue
+  
   elif command == 4:
     b = registers["B"]
     c = registers["C"]
     registers["B"] = b ^ c
-    pointer += 1
     
   elif command == 5:
     output.append(use_value%8)
-    pointer += 1
     
   elif command == 6:
     a = registers["A"]
     registers["B"] = math.trunc(a/2**use_value)
-    pointer += 1
     
   elif command == 7:
     a = registers["A"]
     registers["C"] = math.trunc(a/2**use_value)
-    pointer += 1
+  
+  pointer += 1
 
 
 # part 1
@@ -94,6 +91,6 @@ result_part_2 =  0
 
 # print the results
 print(f"--- Day {day}: ---")
-print(f"Part 1: {result_part_1}")
+print(f"Part 1: {result_part_1}") #7,1,5,2,4,0,7,6,1
 print(f"Part 2: {result_part_2}")
 print(f"Duration: {time.time() - start_time} seconds")
