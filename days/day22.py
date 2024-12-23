@@ -15,22 +15,16 @@ start_time = time.time()
 # code for both parts
 initial_numbers = list(map(int, input))
 
-def mix(secret, value):
-  return secret ^ value
-
-def prune(value):
-  return value % 16777216
+def evolve(secret):
+  secret ^= (secret * 64) %16777216
+  secret ^= (secret // 32) %16777216
+  secret ^= (secret * 2048) %16777216
+  return secret
 
 # part 1
 result_part_1 = 0
 for secret in initial_numbers:
-  new_secret = secret
-  for i in range(2000):
-    new_secret = prune(mix(new_secret, new_secret * 64))
-    new_secret = prune(mix(new_secret, new_secret // 32))
-    new_secret = prune(mix(new_secret, new_secret * 2048))
-  
-  result_part_1 += new_secret
+  result_part_1 += [secret := evolve(secret) for _ in range(2000)][-1]
 
 # part 2
 result_part_2 =  0
