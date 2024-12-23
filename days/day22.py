@@ -34,7 +34,7 @@ for secret in initial_numbers:
   
   # part 2
   seen = set()
-  for i in range(len(changes)-4):
+  for i in range(len(changes)-3):
     sequence = tuple(changes[i:i+4])
     if sequence not in seen:
       seen.add(sequence)
@@ -46,5 +46,5 @@ result_part_2 = max(change_sequences.values())
 # print the results
 print(f"--- Day {day}: ---")
 print(f"Part 1: {result_part_1}") #20071921341
-print(f"Part 2: {result_part_2}") # not 2235
+print(f"Part 2: {result_part_2}") #2242
 print(f"Duration: {time.time() - start_time} seconds")
