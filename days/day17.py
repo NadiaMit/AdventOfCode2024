@@ -1,7 +1,7 @@
+import math
+import re
 import sys
 import time
-import re
-import math
 
 sys.path.insert(1, sys.path[0].replace("days", "helpers"))
 import helpers as helpers
@@ -9,82 +9,38 @@ import helpers as helpers
 # get daily input
 day = helpers.get_current_day(__file__)
 isTest = sys.argv[-1] == "test"
-input = helpers.read_input(day, test=isTest)
+input = helpers.read_input(day, split_lines = False, test=isTest)
 
 # start timer for whole day puzzle after reading the input
 start_time = time.time()
 
 # code for both parts
-registers = {}
-program = []
-pointer = 0
+reg_a, reg_b, reg_c, *program = map(int, re.findall(r'\d+', input))
+program = [(program[i], program[i+1]) for i in range(0, len(program), 2)]
 
-pattern = re.compile(r"Register ([ABC]): (\d+)")
-for i in range(len(input[0:3])):
-  match = pattern.match(input[i])
-  reg = match.group(1)
-  val = int(match.group(2))
-  registers[reg] = val
-
-program_string = input[4].split(" ")[1]
-program_string = program_string.split(",")
-for i in range(0, len(program_string), 2):
-  program.append((int(program_string[i]), int(program_string[i+1])))
-
-output = []
-while pointer < len(program):
-  command, value = program[pointer]
-
-  # get new value 
-  use_value = value
-  if value == 4:
-    use_value = registers["A"]
-  elif value == 5:
-    use_value = registers["B"]
-  elif value == 6:
-    use_value = registers["C"]
-  elif value == 7:
-    print("ERROR SHOULD NOT BE HERE")
-    break
+def run_program(a, b, c):
+  pointer = 0
+  output = []
+  while pointer < len(program):
+    command, value = program[pointer]
+    use_value = [0,1,2,3,a,b,c][value]
+    pointer += 1
+    
+    match command:
+      case 0: a = a//2**use_value
+      case 1: b = b ^ value
+      case 2: b = use_value % 8
+      case 3: pointer = value if a != 0 else pointer
+      case 4: b = b ^ c
+      case 5: output.append(use_value%8)
+      case 6: b = a//2**use_value
+      case 7: c = a//2**use_value
   
-  if command == 0:
-    a = registers["A"]
-    registers["A"] = math.trunc(a/2**use_value)
-    
-  elif command == 1:
-    b = registers["B"]
-    # bitwise XOR with value
-    registers["B"] = b ^ value
-    
-  elif command == 2:
-    registers["B"] = use_value % 8
-    
-  elif command == 3:
-    if registers["A"] != 0:
-      pointer = value
-      continue
-  
-  elif command == 4:
-    b = registers["B"]
-    c = registers["C"]
-    registers["B"] = b ^ c
-    
-  elif command == 5:
-    output.append(use_value%8)
-    
-  elif command == 6:
-    a = registers["A"]
-    registers["B"] = math.trunc(a/2**use_value)
-    
-  elif command == 7:
-    a = registers["A"]
-    registers["C"] = math.trunc(a/2**use_value)
-  
-  pointer += 1
+  return str.join(",", [str(x) for x in output])
 
 
 # part 1
-result_part_1 = str.join(",", [str(x) for x in output])
+result_part_1 = run_program(reg_a, reg_b, reg_c)
 
 # part 2
 result_part_2 =  0
