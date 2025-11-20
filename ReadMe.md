@@ -23,7 +23,7 @@ To create a new day you can run the following command:
 
 where `<day>` is the number of the day you want to create.
 
-This will create a new file in the `days` folder called `day<day>.py` (with the content of the `template.py` file is existend) and a new file in the `inputs` folder called `input<day>.txt`.
+This will create a new file in the `days` folder called `day<day>.py` (with the content of the `template.py` file is existend) and a new file in the `inputs` folder called `day<day>.txt`.
 
 (You can also create the files by hand if you want of course)
 
